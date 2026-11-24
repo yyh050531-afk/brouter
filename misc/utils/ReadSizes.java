@@ -2,30 +2,38 @@ import java.io.*;
 import java.net.*;
 
 public class ReadSizes {
-  private static int[] tileSizes = new int[72 * 36];
 
+private static final int degrees = 5;
+  private static final int row = 360/degrees;
+  private static final int column =180/degrees;
+  private static final int offset = 180;
+  private static final int latOffset = 90;
+  private static final int invalidTile = -1;
+  private static int[] tileSizes = new int[row * column];
   protected static String baseNameForTile(int tileIndex) {
-    int lon = (tileIndex % 72) * 5 - 180;
-    int lat = (tileIndex / 72) * 5 - 90;
+    int lon = (tileIndex % row) * degrees - offset;
+    int lat = (tileIndex / row) * degrees - latOffset;
     String slon = lon < 0 ? "W" + (-lon) : "E" + lon;
     String slat = lat < 0 ? "S" + (-lat) : "N" + lat;
     return slon + "_" + slat;
   }
 
+
   private static int tileForBaseName(String basename) {
     String uname = basename.toUpperCase();
     int idx = uname.indexOf("_");
-    if (idx < 0) return -1;
+    if (idx < 0) return invalidTile;
     String slon = uname.substring(0, idx);
     String slat = uname.substring(idx + 1);
     int ilon = slon.charAt(0) == 'W' ? -Integer.valueOf(slon.substring(1)) :
       (slon.charAt(0) == 'E' ? Integer.valueOf(slon.substring(1)) : -1);
     int ilat = slat.charAt(0) == 'S' ? -Integer.valueOf(slat.substring(1)) :
       (slat.charAt(0) == 'N' ? Integer.valueOf(slat.substring(1)) : -1);
-    if (ilon < -180 || ilon >= 180 || ilon % 5 != 0) return -1;
-    if (ilat < -90 || ilat >= 90 || ilat % 5 != 0) return -1;
-    return (ilon + 180) / 5 + 72 * ((ilat + 90) / 5);
+    if (ilon < -offset || ilon >= offset || ilon % degrees != 0) return invalidTile;
+    if (ilat < -latOffset || ilat >= latOffset || ilat % degrees != 0) return invalidTile;
+    return (ilon + offset) / degrees + row * ((ilat + latOffset) /degrees);
   }
+
 
 
   private static void scanExistingFiles(File dir) {
