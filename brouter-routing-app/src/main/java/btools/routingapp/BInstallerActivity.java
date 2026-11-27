@@ -53,7 +53,7 @@ public class BInstallerActivity extends AppCompatActivity {
   private static final int DIALOG_CONFIRM_GETDIFFS_ID = 3;
   private static final int DIALOG_NEW_APP_NEEDED_ID = 4;
 
-  public static final int MY_PERMISSIONS_REQUEST_NITIFICATION = 100;
+  public static final int MY_PERMISSIONS_REQUEST_NOTIFICATION = 100;
 
   public static boolean downloadCanceled = false;
   private File mBaseDir;
@@ -89,7 +89,7 @@ public class BInstallerActivity extends AppCompatActivity {
         //
       } else {
         // You can directly ask for the permission.
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, MY_PERMISSIONS_REQUEST_NITIFICATION);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, MY_PERMISSIONS_REQUEST_NOTIFICATION);
       }
     }
 
