@@ -81,7 +81,9 @@ private static final int degrees = 5;
     }
 
     String fileName = indexLine.substring(indexLine.indexOf('"') + 1, indexLine.lastIndexOf('"'));
-    int fileSize = Integer.parseInt(indexLine.substring(indexLine.lastIndexOf(" ") + 1));
+   int fileSizeStart = indexLine.lastIndexOf(" ") + 1;
+   String fileSizeText = indexLine.substring(fileSizeStart);
+   int fileSize = Integer.parseInt(fileSizeText);
 
     String basename = fileName.substring(0, fileName.length() - suffix.length());
     int tidx = tileForBaseName(basename);
