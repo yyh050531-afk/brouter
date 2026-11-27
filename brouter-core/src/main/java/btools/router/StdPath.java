@@ -96,11 +96,11 @@ final class StdPath extends OsmPath {
       //   AND estimated_crossing_class is defined on the node, than penalty!!!
 
       if (rc.consider_crossing && oldPrio > 0 && nsection == 0  && angle < 0 && oldPrio >= rc.crossing_Prio_H && newPrio <= rc.crossing_Prio_L){
-        int class_index = 0;
+        
         if (sourceNode.nodeDescription != null) {
-          boolean nodeAccessGranted = rc.expctxWay.getNodeAccessGranted() != 0.;
-          String node_tags = rc.expctxNode.getKeyValueDescription(nodeAccessGranted, sourceNode.nodeDescription);
-          class_index = node_tags.indexOf("estimated_crossing_class=");
+        
+         String node_tags = readingCrossing(rc);
+int class_index = node_tags.indexOf("estimated_crossing_class=");
           if (class_index > -1) {
             String crossing_class  = node_tags.substring(class_index + 25, class_index + 26);
             int additional_turn_cost = 0;
@@ -115,15 +115,16 @@ final class StdPath extends OsmPath {
         }
       }
 
+     
+
       // for left-hand traffic
       // If the turn is RIGHT and coming from "primary|secondary" to a lower priority HW AND estimated_crossing_class is defined on the node, than penalty!!!
 
       if (rc.consider_crossing && oldPrio > 0 && nsection == 0  && angle > 0 && oldPrio >= rc.crossing_Prio_H && newPrio <= rc.crossing_Prio_L) {
-        int class_index = 0;
+        
         if (sourceNode.nodeDescription != null) {
-          boolean nodeAccessGranted = rc.expctxWay.getNodeAccessGranted() != 0.;
-          String node_tags = rc.expctxNode.getKeyValueDescription(nodeAccessGranted, sourceNode.nodeDescription);
-          class_index = node_tags.indexOf("estimated_crossing_class=");
+       String node_tags = readingCrossing(rc);
+int class_index = node_tags.indexOf("estimated_crossing_class=");
           if (class_index > -1) {
             String crossing_class  = node_tags.substring(class_index + 25, class_index + 26);
             int additional_turn_cost = 0;
@@ -229,6 +230,13 @@ final class StdPath extends OsmPath {
 
     return sectionCost;
   }
+
+ public String readingCrossing( RoutingContext rc){
+   boolean nodeAccessGranted = rc.expctxWay.getNodeAccessGranted() != 0.;
+  String node_tags = rc.expctxNode.getKeyValueDescription(nodeAccessGranted, sourceNode.nodeDescription);
+  return node_tags;
+      }
+
 
   @Override
   protected double processTargetNode(RoutingContext rc) {
